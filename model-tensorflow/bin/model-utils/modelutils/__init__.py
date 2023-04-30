@@ -1,5 +1,7 @@
 import pathlib
 import sys
+import re
+import importlib
 
 import click
 import pytest
@@ -10,6 +12,7 @@ from .scripts.utils import get_project_dir
 
 @click.group()
 def cli():
+    """Model utilities to automate common model related tasks."""
     pass
 
 
@@ -63,11 +66,15 @@ def promoted_exists():
 
 
 @cli.command()
-def train():
+@click.argument("training_script", type=click.Path(exists=True))
+def train(training_script: pathlib.Path):
     """Train a model using a training script."""
-    # TODO add training script
-    pass
-
+    training_script = pathlib.Path(training_script)
+    sys.path.append(str(training_script.parent))
+    module_name = re.sub(r"\.py$", "", training_script.name)
+    module = importlib.import_module(module_name)
+    trainer = module.Trainer()
+    trainer.run()
 
 @cli.command()
 def test():
