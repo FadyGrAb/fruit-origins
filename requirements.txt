@@ -1,0 +1,4 @@
+ipykernel
+Pillow==8.4.0
+tensorflow==2.6.2
+tensorflowjs==3.18.0

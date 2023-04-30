@@ -1,0 +1,8 @@
+venv_*
+__pycache__
+*pytest_cache
+.vscode
+*.egg-info
+model-tensorflow/data/ours
+model-tensorflow/models/*
+node_modules
