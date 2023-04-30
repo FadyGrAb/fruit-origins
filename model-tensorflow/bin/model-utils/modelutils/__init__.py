@@ -4,7 +4,7 @@ import sys
 import click
 import pytest
 
-from .scripts import Clearer, Promoter
+from .scripts import Clearer, Deployer, Promoter
 from .scripts.utils import get_project_dir
 
 
@@ -16,6 +16,7 @@ def cli():
 @cli.command()
 @click.argument("project_path", default=pathlib.Path(), type=click.Path(exists=True))
 def init(project_path: pathlib.Path):
+    """Must run in the modelling project's root."""
     config_file = project_path / ".modelutils"
     if config_file.exists():
         print("Project already initiated.")
@@ -28,6 +29,7 @@ def init(project_path: pathlib.Path):
 @cli.command()
 @click.argument("model_path", type=click.Path(exists=True))
 def promote(model_path):
+    """Promote a created model. Promoted model will be deployed if it passes the tests."""
     model_path = pathlib.Path(model_path)
     if model_path.exists():
         # TODO: promote script
@@ -40,11 +42,13 @@ def promote(model_path):
 
 @cli.command()
 def clear_promoted():
+    """Delete the promoted model."""
     Clearer.clear_promoted()
 
 
 @cli.command()
 def promoted_exists():
+    """Check if there is a promoted model."""
     project_path = get_project_dir()
     promoted_path = project_path / "promoted-model"
     promoted_models = list(promoted_path.iterdir())
@@ -60,13 +64,21 @@ def promoted_exists():
 
 @cli.command()
 def train():
+    """Train a model using a training script."""
     # TODO add training script
     pass
 
 
 @cli.command()
 def test():
+    """Run model tests."""
     pytest.main(pathlib.Path(__file__).parent / "scripts/tests/")
+
+
+@cli.command()
+def deploy():
+    """Deploy the promoted model."""
+    Deployer.deploy()
 
 
 if __name__ == "__main__":
