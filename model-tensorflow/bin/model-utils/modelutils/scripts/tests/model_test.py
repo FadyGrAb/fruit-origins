@@ -18,8 +18,6 @@ def test_model_accuracy(model_path: pathlib.Path):
         test_data_path, image_size=(100, 100), batch_size=64
     )
     _, accuracy = model.evaluate(test_ds)
-    test_pass = accuracy >= acc_test_value
-    color = "green" if test_pass else "red"
+    color = "green" if accuracy >= acc_test_value else "red"
     cprint(f"Model accuracy: {accuracy:.2%} - Threshold value: {acc_test_value:.2%}", color=color, bright=True)
-    if not test_pass:
-        sys.exit(1)
+    assert accuracy >= acc_test_value

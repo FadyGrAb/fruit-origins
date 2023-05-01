@@ -86,12 +86,12 @@ def train(training_script: pathlib.Path, **kwargs):
 
 @cli.command()
 @click.option("-a", "--acc-value", default=95, show_default=True, help="Model accuracy threshold. ex 95.")
-def test(**kwarg):
+def test(acc_value):
     """Run model tests."""
-    test_configs = kwarg
+    test_configs["acc_value"] = acc_value
     opts = ["-v", "-s", "-p", "no:warnings"]
     tests_dir = pathlib.Path(__file__).parent / "scripts/tests/"
-    pytest.main(opts + [str(tests_dir)])
+    sys.exit(pytest.main(opts + [str(tests_dir)]))
 
 
 @cli.command()

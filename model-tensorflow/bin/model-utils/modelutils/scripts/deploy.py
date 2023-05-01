@@ -1,6 +1,6 @@
 import subprocess
 import sys
-
+import shutil
 from .utils import get_project_dir
 
 
@@ -8,13 +8,18 @@ class Deployer:
     def deploy():
         project_path = get_project_dir()
         promoted_path = project_path / "promoted-model"
+        deployment_path = project_path.parent / "frontend-js/model"
         files_in_promoted = list(promoted_path.iterdir())
         if len(files_in_promoted) == 1:
             model = files_in_promoted[0]
+            # Delete old model
+            for old_model in deployment_path.iterdir():
+                shutil.rmtree(old_model)
+
             subprocess.run(
                 f"tensorflowjs_converter --input_format=keras \
                 {str(model)} \
-                {str(project_path.parent / f'frontend-js/model/{model.name}/')}",
+                {str(deployment_path / model.name) }/",
                 shell=True,
             )
         else:
