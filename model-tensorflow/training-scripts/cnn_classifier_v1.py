@@ -2,19 +2,21 @@ import pathlib
 import tensorflow as tf
 import numpy as np
 import datetime
+import textwrap
 
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras import Sequential
 
 class Trainer:
-    def __init__(self):
+    def __init__(self, **kwargs):
         print("Running CNN classifier v1")
         self.project_path = pathlib.Path(__file__).parents[1]
         train_ds_path = self.project_path / "data/train"
-        self.BATH_SIZE = 64
-        self.IMG_HEIGHT = 100
-        self.IMG_WIDTH = 100
+        self.BATCH_SIZE = kwargs.get("batch_size", 64)
+        self.IMG_HEIGHT = kwargs.get("img_height", 100)
+        self.IMG_WIDTH = kwargs.get("img_width", 100)
+        self.EPOCHS = kwargs.get("epochs", 5)
 
         self.train_ds = tf.keras.utils.image_dataset_from_directory(
             train_ds_path,
@@ -22,7 +24,7 @@ class Trainer:
             subset="training",
             seed=123,
             image_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
-            batch_size=self.BATH_SIZE
+            batch_size=self.BATCH_SIZE
         )
         self.val_ds = tf.keras.utils.image_dataset_from_directory(
             train_ds_path,
@@ -30,7 +32,7 @@ class Trainer:
             subset="validation",
             seed=123,
             image_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
-            batch_size=self.BATH_SIZE
+            batch_size=self.BATCH_SIZE
         )
         self.num_classes = len(self.train_ds.class_names)
 
@@ -70,14 +72,21 @@ class Trainer:
 
     def run(self):
         model = self.__create_model()
-        epochs = 5
+        print(textwrap.dedent(
+        f"""\
+        BATCH_SIZE: {self.BATCH_SIZE}
+        IMG_Height: {self.IMG_HEIGHT}
+        IMG_WIDTH: {self.IMG_WIDTH}
+        EPOCHS: {self.EPOCHS}
+        """))
         history = model.fit(
             self.train_ds,
             validation_data=self.val_ds,
-            epochs=epochs
+            epochs=self.EPOCHS
         )
         timestamp = int(datetime.datetime.now().timestamp())
         model_name = f"fruit-origins-model-{timestamp}.h5"
         model_path = self.project_path / f"models/{model_name}"
         model.save(model_path)
         print(f"Model saved: {str(model_path)}")
+        return model_path

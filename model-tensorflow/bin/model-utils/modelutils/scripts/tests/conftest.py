@@ -1,5 +1,4 @@
 import pytest
-import pathlib
 from ..utils import get_project_dir
 
 

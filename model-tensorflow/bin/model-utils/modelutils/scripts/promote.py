@@ -13,6 +13,7 @@ class Promoter:
         promoted_dir = project_path / "promoted-model"
         if len(list(promoted_dir.iterdir())) == 0:
             shutil.copy(model_path, promoted_dir)
+            print(f"Model {model_path.name} is promoted.")
         else:
             print("'promoted-model' directory isn't empty")
             sys.exit(1)
