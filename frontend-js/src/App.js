@@ -12,15 +12,45 @@ import * as tf from "@tensorflow/tfjs";
 
 const model = tf.loadLayersModel("/model/model.json");
 
+const CLASS_NAMES = [
+  "Apple Golden",
+  "Apple Granny Smith",
+  "Apple Red",
+  "Apricot",
+  "Avocado",
+  "Banana",
+  "Blueberry",
+  "Cantaloupe",
+  "Cherry",
+  "Chestnut",
+  "Cocos",
+  "Eggplant",
+  "Guava",
+  "Hazelnut",
+  "Kiwi",
+  "Lemon",
+  "Mango",
+  "Onion Red",
+  "Orange",
+  "Papaya",
+  "Peach",
+  "Pear",
+  "Pepper Green",
+  "Potato Sweet",
+  "Potato White",
+  "Raspberry",
+  "Strawberry",
+  "Tomato",
+  "Walnut",
+  "Watermelon",
+];
+
 function App() {
   const [image, setImag] = useState(null);
   const [prediction, setPrediction] = useState(null);
 
-  const resize = () => {};
-
   const handleUpload = (file) => {
     const reader = new FileReader();
-    let img = null;
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       const base64Data = reader.result;
@@ -28,12 +58,30 @@ function App() {
     };
   };
 
-  const predict = (file) => {
-    handleUpload(file);
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(image, 0, 0, 100, 100);
-    setPrediction(model.predict(canvas));
+  const getPredictionResults = (result) => {
+    let pred = [];
+    for (let i = 0; i < result.length; ++i) {
+      pred.push([[CLASS_NAMES[i]], result[i]]);
+    }
+    pred.sort((a, b) => b[1] - a[1]);
+    // pred = pred.filter((item) => item[1] > 0.0009);
+    pred = pred.slice(10);
+    let output = {};
+    pred.forEach((item) => (output[item[0]] = parseInt(item[1] * 100)));
+    return output;
+  };
+
+  const predict = () => {
+    const img = document.getElementById("uploaded-image");
+    const img_tensor = tf.browser.fromPixels(img);
+    const img_resized = tf.image.resizeBilinear(img_tensor, [100, 100]);
+    const batch_img = tf.expandDims(img_resized, 0);
+    model.then((result) => {
+      const predResult = tf.softmax(result.predict(batch_img)).dataSync();
+      console.log("softmax", predResult);
+      setPrediction(getPredictionResults(predResult));
+    });
+    // console.log(model.predict(img_resized));
   };
 
   const hideImage = () => {
@@ -44,11 +92,15 @@ function App() {
     <Container className="text-center shadow p-3 mb-5 bg-body-tertiary rounded bg-warning">
       <AppHeader />
       <Row>
-        <UploadedImage showImage={image !== null} src={image} />
-        <Result />
+        <UploadedImage
+          predict={predict}
+          showImage={image !== null}
+          src={image}
+        />
+        <Result prediction={prediction} />
       </Row>
       <Row>
-        <UploadForm predict={predict} hideImage={hideImage} />
+        <UploadForm hideImage={hideImage} handleUpload={handleUpload} />
       </Row>
     </Container>
   );

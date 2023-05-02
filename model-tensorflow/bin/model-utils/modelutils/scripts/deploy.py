@@ -1,6 +1,5 @@
 import subprocess
 import sys
-import shutil
 from .utils import get_project_dir
 
 
@@ -14,8 +13,7 @@ class Deployer:
             model = files_in_promoted[0]
             # Delete old model
             for old_model in deployment_path.iterdir():
-                shutil.rmtree(old_model)
-
+                old_model.unlink()
             subprocess.run(
                 f"tensorflowjs_converter --input_format=keras \
                 {str(model)} \

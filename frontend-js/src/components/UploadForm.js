@@ -14,7 +14,7 @@ const UploadFrom = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.predict(file);
+    props.handleUpload(file);
   };
   return (
     <Col>
