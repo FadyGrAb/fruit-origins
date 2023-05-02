@@ -8,7 +8,7 @@ class Deployer:
     def deploy():
         project_path = get_project_dir()
         promoted_path = project_path / "promoted-model"
-        deployment_path = project_path.parent / "frontend-js/model"
+        deployment_path = project_path.parent / "frontend-js/public/model"
         files_in_promoted = list(promoted_path.iterdir())
         if len(files_in_promoted) == 1:
             model = files_in_promoted[0]
@@ -19,7 +19,7 @@ class Deployer:
             subprocess.run(
                 f"tensorflowjs_converter --input_format=keras \
                 {str(model)} \
-                {str(deployment_path / model.name) }/",
+                {str(deployment_path) }/",
                 shell=True,
             )
         else:
