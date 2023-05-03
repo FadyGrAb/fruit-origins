@@ -1,5 +1,7 @@
+// React imports
 import { useState, useCreateRef } from "react";
 
+// Components imports
 import Result from "./components/Result";
 import UploadedImage from "./components/UploadedImage";
 import UploadForm from "./components/UploadForm";
@@ -7,13 +9,11 @@ import AppHeader from "./components/AppHeader";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-
 import * as tf from "@tensorflow/tfjs";
-
 import classNames from "./assets/classNames.json";
-const CLASS_NAMES = classNames.classNames;
 
 const model = tf.loadLayersModel("/model/model.json");
+const CLASS_NAMES = classNames.classNames;
 
 function App() {
   const [image, setImag] = useState(null);
@@ -28,31 +28,25 @@ function App() {
     };
   };
 
-  const getPredictionResults = (result) => {
+  const objectToArray = (result) => {
+    //Convert Object to list to invoke ordering
     let pred = [];
     for (let i = 0; i < result.length; ++i) {
       pred.push([[CLASS_NAMES[i]], result[i]]);
     }
-    console.log("Predictions array", pred);
-    // pred.sort((a, b) => b[1] - a[1]);
-    // pred = pred.filter((item) => item[1] > 0.0009);
-    // pred = pred.slice(10);
-    let output = {};
-    pred.forEach((item) => (output[item[0]] = parseInt(item[1] * 100)));
     return pred.map((item) => [item[0], parseInt(item[1] * 100)]);
   };
 
   const predict = () => {
+    // set "prediction" state
     const img = document.getElementById("uploaded-image");
     const img_tensor = tf.browser.fromPixels(img);
     const img_resized = tf.image.resizeBilinear(img_tensor, [100, 100]);
     const batch_img = tf.expandDims(img_resized, 0);
     model.then((result) => {
       const predResult = tf.softmax(result.predict(batch_img)).dataSync();
-      // console.log("softmax", predResult);
-      setPrediction(getPredictionResults(predResult));
+      setPrediction(objectToArray(predResult));
     });
-    // console.log(model.predict(img_resized));
   };
 
   const hideImage = () => {
@@ -68,7 +62,7 @@ function App() {
           showImage={image !== null}
           src={image}
         />
-        <Result prediction={prediction} />
+        <Result prediction={prediction} hideChart={image === null} />
       </Row>
       <Row>
         <UploadForm hideImage={hideImage} handleUpload={handleUpload} />

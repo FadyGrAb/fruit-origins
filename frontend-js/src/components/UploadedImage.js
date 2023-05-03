@@ -4,7 +4,7 @@ import Col from "react-bootstrap/Col";
 
 const UploadedImage = (props) => {
   return (
-    <Col className="d-flex align-items-center justify-content-center">
+    <Col className="d-flex align-items-center justify-content-center col-3">
       <img
         id="uploaded-image"
         src={props.src}

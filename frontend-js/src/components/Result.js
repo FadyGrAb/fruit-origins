@@ -1,8 +1,9 @@
 import Col from "react-bootstrap/Col";
-import Chart from "chart.js/auto";
+import HBarChart from "./HBarChart";
+// import BarChart from "./ResultsChart";
 
 const Result = (props) => {
-  let top10 = "";
+  let top10 = [];
   if (props.prediction !== null) {
     const res = props.prediction;
     res.sort((a, b) => b[1] - a[1]);
@@ -11,35 +12,10 @@ const Result = (props) => {
       return item[1] >= 5;
     });
   }
-  const ctx = document.getElementById("results");
-  console.log(ctx);
-  if (ctx !== null) {
-    const resultsChart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-        datasets: [
-          {
-            label: "# of Votes",
-            data: [12, 19, 3, 5, 2, 3],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
-  }
 
   return (
-    <Col className="d-flex align-items-center justify-content-center">
-      <p>{JSON.stringify(top10)}</p>
-      <dev id="results"></dev>
+    <Col hidden={props.hideChart}>
+      <HBarChart data={top10} />
     </Col>
   );
 };
