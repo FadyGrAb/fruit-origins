@@ -10,40 +10,12 @@ import Row from "react-bootstrap/Row";
 
 import * as tf from "@tensorflow/tfjs";
 
+import classNames from "./assets/classNames.json";
+
 const model = tf.loadLayersModel("/model/model.json");
 
-const CLASS_NAMES = [
-  "Apple Golden",
-  "Apple Granny Smith",
-  "Apple Red",
-  "Apricot",
-  "Avocado",
-  "Banana",
-  "Blueberry",
-  "Cantaloupe",
-  "Cherry",
-  "Chestnut",
-  "Cocos",
-  "Eggplant",
-  "Guava",
-  "Hazelnut",
-  "Kiwi",
-  "Lemon",
-  "Mango",
-  "Onion Red",
-  "Orange",
-  "Papaya",
-  "Peach",
-  "Pear",
-  "Pepper Green",
-  "Potato Sweet",
-  "Potato White",
-  "Raspberry",
-  "Strawberry",
-  "Tomato",
-  "Walnut",
-  "Watermelon",
-];
+// const CLASS_NAMES = require("/model/classNames.json");
+// console.log(CLASS_NAMES);
 
 function App() {
   const [image, setImag] = useState(null);
@@ -61,7 +33,7 @@ function App() {
   const getPredictionResults = (result) => {
     let pred = [];
     for (let i = 0; i < result.length; ++i) {
-      pred.push([[CLASS_NAMES[i]], result[i]]);
+      pred.push([[classNames[i]], result[i]]);
     }
     pred.sort((a, b) => b[1] - a[1]);
     // pred = pred.filter((item) => item[1] > 0.0009);

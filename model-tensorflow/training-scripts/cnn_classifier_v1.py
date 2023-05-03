@@ -34,7 +34,7 @@ class Trainer:
             image_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
             batch_size=self.BATCH_SIZE
         )
-        self.num_classes = len(self.train_ds.class_names)
+        self.class_names = self.train_ds.class_names
 
         AUTOTUNE = tf.data.AUTOTUNE
 
@@ -42,17 +42,19 @@ class Trainer:
         self.val_ds = self.val_ds.cache().prefetch(buffer_size=AUTOTUNE)
 
     def __create_model(self):
-        preprocess = keras.Sequential(
-            [
-                layers.RandomFlip("horizontal", input_shape=(self.IMG_HEIGHT, self.IMG_WIDTH, 3)),
-                layers.RandomRotation(0.1),
-                layers.RandomZoom(0.1),
-            ]
-        )
+        # tfjs has problems with the RandomFlip layer so I've excluded the
+        # data augmentation all together.
+        # preprocess = keras.Sequential(
+        #     [
+        #         layers.RandomFlip("horizontal", input_shape=(self.IMG_HEIGHT, self.IMG_WIDTH, 3)),
+        #         layers.RandomRotation(0.1),
+        #         layers.RandomZoom(0.1),
+        #     ]
+        # )
 
         model = Sequential([
-            preprocess,
-            layers.Rescaling(1./255),
+            # preprocess,
+            layers.Rescaling(1./255, input_shape=(self.IMG_HEIGHT, self.IMG_WIDTH , 3)),
             layers.Conv2D(16, 3, padding='same', activation='relu'),
             layers.MaxPooling2D(),
             layers.Conv2D(32, 3, padding='same', activation='relu'),
@@ -62,7 +64,7 @@ class Trainer:
             layers.Dropout(0.2),
             layers.Flatten(),
             layers.Dense(128, activation='relu'),
-            layers.Dense(self.num_classes),
+            layers.Dense(len(self.class_names)),
             ])
         model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
@@ -73,13 +75,13 @@ class Trainer:
     def run(self):
         model = self.__create_model()
         print(textwrap.dedent(
-        f"""\
+        f"""
         BATCH_SIZE: {self.BATCH_SIZE}
         IMG_Height: {self.IMG_HEIGHT}
         IMG_WIDTH: {self.IMG_WIDTH}
         EPOCHS: {self.EPOCHS}
         """))
-        history = model.fit(
+        model.fit(
             self.train_ds,
             validation_data=self.val_ds,
             epochs=self.EPOCHS
@@ -89,4 +91,4 @@ class Trainer:
         model_path = self.project_path / f"models/{model_name}"
         model.save(model_path)
         print(f"Model saved: {str(model_path)}")
-        return model_path
+        return model_path, self.class_names

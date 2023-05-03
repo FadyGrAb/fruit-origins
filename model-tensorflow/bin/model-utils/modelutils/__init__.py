@@ -8,7 +8,7 @@ import click
 import pytest
 
 from .scripts import Clearer, Deployer, Promoter
-from .scripts.utils import get_project_dir, save_model_hyperparams, query_model_hyperparams
+from .scripts.utils import get_project_dir, save_model_data, query_model_hyperparams
 from .scripts.tests.configs import test_configs
 
 
@@ -80,8 +80,8 @@ def train(training_script: pathlib.Path, **kwargs):
     module_name = re.sub(r"\.py$", "", training_script.name)
     module = importlib.import_module(module_name)
     trainer = module.Trainer(**kwargs)
-    model_path = trainer.run()
-    save_model_hyperparams(model_path, training_script=str(training_script), **kwargs)
+    model_path, class_names = trainer.run()
+    save_model_data(model_path, class_names=class_names, training_script=str(training_script), **kwargs)
 
 
 @cli.command()

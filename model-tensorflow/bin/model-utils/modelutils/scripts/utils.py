@@ -31,7 +31,7 @@ def cprint(*args, color: str = "white", bright=False, header=False) -> None:
     print(color_control + text + Style.RESET_ALL)
 
 
-def save_model_hyperparams(model_path: pathlib.Path, **kwargs):
+def save_model_data(model_path: pathlib.Path,  **kwargs):
     models_json = model_path.parent / "models.json"
     if models_json.exists():
         with models_json.open(mode="r") as j:
