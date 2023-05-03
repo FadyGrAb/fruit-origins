@@ -35,6 +35,7 @@ const UploadFrom = (props) => {
           variant="danger"
           className="m-2 p-3"
           type="submit"
+          disabled={file == null}
         >
           Fruitfy
         </Button>

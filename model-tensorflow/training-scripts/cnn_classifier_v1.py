@@ -17,6 +17,7 @@ class Trainer:
         self.IMG_HEIGHT = kwargs.get("img_height", 100)
         self.IMG_WIDTH = kwargs.get("img_width", 100)
         self.EPOCHS = kwargs.get("epochs", 5)
+        self.TAG = kwargs.get("tag", "")
 
         self.train_ds = tf.keras.utils.image_dataset_from_directory(
             train_ds_path,
@@ -87,7 +88,8 @@ class Trainer:
             epochs=self.EPOCHS
         )
         timestamp = int(datetime.datetime.now().timestamp())
-        model_name = f"fruit-origins-model-{timestamp}.h5"
+        tag = f"-{self.TAG}" if self.TAG else ""
+        model_name = f"fruit-model-{timestamp}{tag}.h5"
         model_path = self.project_path / f"models/{model_name}"
         model.save(model_path)
         print(f"Model saved: {str(model_path)}")

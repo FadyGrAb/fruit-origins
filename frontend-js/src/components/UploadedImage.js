@@ -11,6 +11,7 @@ const UploadedImage = (props) => {
         alt={"input"}
         hidden={!props.showImage}
         onLoad={props.predict}
+        className="shadow"
       />
     </Col>
   );

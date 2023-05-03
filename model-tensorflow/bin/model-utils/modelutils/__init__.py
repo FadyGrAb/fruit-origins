@@ -73,6 +73,7 @@ def exists():
 @click.option("-h", "--img-height", default=100, show_default=True, help="Images resized height.")
 @click.option("-w", "--img-width", default=100, show_default=True, help="Images resized width.")
 @click.option("-e", "--epochs", default=5, show_default=True, help="Number of training epochs.")
+@click.option("-t", "--tag", default="", show_default=True, help="Tag the model that will be shown in its file name.")
 def train(training_script: pathlib.Path, **kwargs):
     """Train a model using a training script."""
     training_script = pathlib.Path(training_script)

@@ -9,6 +9,7 @@ import AppHeader from "./components/AppHeader";
 
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import * as tf from "@tensorflow/tfjs";
 import classNames from "./assets/classNames.json";
 
@@ -54,8 +55,12 @@ function App() {
   };
 
   return (
-    <Container className="text-center shadow p-3 mb-5 bg-body-tertiary rounded bg-warning">
-      <AppHeader />
+    <Container className="text-center mt-5 shadow p-2 mb-5 bg-body-tertiary rounded bg-warning">
+      <Row>
+        <Col className="justify-content-center">
+          <AppHeader />
+        </Col>
+      </Row>
       <Row>
         <UploadedImage
           predict={predict}
@@ -66,6 +71,11 @@ function App() {
       </Row>
       <Row>
         <UploadForm hideImage={hideImage} handleUpload={handleUpload} />
+        <footer>
+          * This app uses an actual deeplearning model (not the greatest 😔) to
+          figure out your fruit resemblance. Choose a photo of an actual fruit
+          and see for yourself, it will be close 😉
+        </footer>
       </Row>
     </Container>
   );
