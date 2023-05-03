@@ -11,11 +11,9 @@ import Row from "react-bootstrap/Row";
 import * as tf from "@tensorflow/tfjs";
 
 import classNames from "./assets/classNames.json";
+const CLASS_NAMES = classNames.classNames;
 
 const model = tf.loadLayersModel("/model/model.json");
-
-// const CLASS_NAMES = require("/model/classNames.json");
-// console.log(CLASS_NAMES);
 
 function App() {
   const [image, setImag] = useState(null);
@@ -33,14 +31,15 @@ function App() {
   const getPredictionResults = (result) => {
     let pred = [];
     for (let i = 0; i < result.length; ++i) {
-      pred.push([[classNames[i]], result[i]]);
+      pred.push([[CLASS_NAMES[i]], result[i]]);
     }
-    pred.sort((a, b) => b[1] - a[1]);
+    console.log("Predictions array", pred);
+    // pred.sort((a, b) => b[1] - a[1]);
     // pred = pred.filter((item) => item[1] > 0.0009);
-    pred = pred.slice(10);
+    // pred = pred.slice(10);
     let output = {};
     pred.forEach((item) => (output[item[0]] = parseInt(item[1] * 100)));
-    return output;
+    return pred.map((item) => [item[0], parseInt(item[1] * 100)]);
   };
 
   const predict = () => {
@@ -50,7 +49,7 @@ function App() {
     const batch_img = tf.expandDims(img_resized, 0);
     model.then((result) => {
       const predResult = tf.softmax(result.predict(batch_img)).dataSync();
-      console.log("softmax", predResult);
+      // console.log("softmax", predResult);
       setPrediction(getPredictionResults(predResult));
     });
     // console.log(model.predict(img_resized));

@@ -25,7 +25,7 @@ const UploadFrom = (props) => {
         <input
           type="file"
           className="btn btn-info m-3 p-1"
-          accept=".jpg, .jpeg"
+          accept=".jpg, .jpeg, .png"
           onChange={handleFileChange}
           onClick={props.hideImage}
         ></input>
