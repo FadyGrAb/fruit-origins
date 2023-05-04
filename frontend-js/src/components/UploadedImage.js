@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import Col from "react-bootstrap/Col";
 
 const UploadedImage = (props) => {

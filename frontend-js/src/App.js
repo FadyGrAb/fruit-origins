@@ -1,5 +1,5 @@
 // React imports
-import { useState, useCreateRef } from "react";
+import { useState } from "react";
 
 // Components imports
 import Result from "./components/Result";
@@ -13,7 +13,7 @@ import Col from "react-bootstrap/Col";
 import * as tf from "@tensorflow/tfjs";
 import classNames from "./assets/classNames.json";
 
-const model = tf.loadLayersModel("/model/model.json");
+const model = tf.loadGraphModel("/model/model.json");
 const CLASS_NAMES = classNames.classNames;
 
 function App() {
@@ -71,10 +71,13 @@ function App() {
       </Row>
       <Row>
         <UploadForm hideImage={hideImage} handleUpload={handleUpload} />
-        <footer>
-          * This app uses an actual deeplearning model (not the greatest 😔) to
-          figure out your fruit resemblance. Choose a photo of an actual fruit
-          and see for yourself, it will be close 😉
+        <footer className="text-start">
+          <p>
+            * This app uses an actual deeplearning model to figure out your
+            fruit resemblance. Choose a photo of an actual fruit and see for
+            yourself. Nothing too complex as the model is very basic and simple
+            and isn't that strong 😉
+          </p>
         </footer>
       </Row>
     </Container>

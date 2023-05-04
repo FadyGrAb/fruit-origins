@@ -19,7 +19,7 @@ class Deployer:
                 old_model.unlink()
             # Convert model to tfjs model.
             subprocess.run(
-                f"tensorflowjs_converter --input_format=keras \
+                f"tensorflowjs_converter --input_format=keras --output_format=tfjs_graph_model\
                 {str(model)} \
                 {str(deployment_path) }/",
                 shell=True,
