@@ -25,7 +25,7 @@ jobs:
         run: |
           conda create -p ./venv python==3.6.8 -y
           conda run -p ./venv pip install -r requirements.txt
-          conda run -p ./venv pip install ./model-tensorflow/bin/modelutils
+          conda run -p ./venv pip install ./model-tensorflow/bin/model-utils
 
       - name: Run model test
         run: |
