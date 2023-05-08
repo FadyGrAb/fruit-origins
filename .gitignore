@@ -6,4 +6,5 @@ __pycache__
 model-tensorflow/data/ours
 model-tensorflow/models/*
 model-tensorflow/data/*
+!model-tensorflow/data/test
 node_modules
