@@ -21,14 +21,10 @@ jobs:
           bash Miniconda3-py310_23.3.1-0-Linux-x86_64.sh -b
           conda init
 
-      - name: Initialize conda
-        run: source /home/runner/.bashrc
-
       - name: Setup environment
         run: |
           conda create -p ./venv python==3.6.8 -y
-          # conda activate ./venv
-          # cd $GITHUB_WORKSPACE
+          pwd
           conda run -p ./venv pip install -r requirements
           conda run -p ./venv pip install ./model-tensorflow/bin/modelutils
 
