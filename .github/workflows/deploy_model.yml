@@ -27,11 +27,12 @@ jobs:
       - name: Setup environment
         run: |
           conda create -p ./venv python==3.6.8 -y
-          conda activate ./venv
-          cd $GITHUB_WORKSPACE
-          pip install -r requirements
-          cd model-tensorflow
-          pip install ./bin/modelutils
+          # conda activate ./venv
+          # cd $GITHUB_WORKSPACE
+          conda run -p ./venv pip install -r requirements
+          conda run -p ./venv pip install ./model-tensorflow/bin/modelutils
 
       - name: Run model test
-        run: mutils test
+        run: |
+          cd model-tensorflow
+          conda run -p ../venv mutils test
