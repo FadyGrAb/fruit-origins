@@ -1,5 +1,5 @@
 name: "Test model and deploy"
-
+run-name: "Model name: $(ls $GITHUB_WORKSAPCE/model-tesnsorflow/promoted-model)"
 on:
   workflow_dispatch:
   push:
