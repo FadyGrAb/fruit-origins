@@ -47,6 +47,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
           MODEL_BUCKET: ${{ vars.MODEL_BUCKET }}
+
         run: |
           aws --version
           aws s3 cp ./model-tensorflow/converted-model/ s3://$MODEL_BUCKET/ --recursive
