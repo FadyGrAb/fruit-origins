@@ -40,3 +40,9 @@ jobs:
           "promoted-model/$(ls ./promoted-model)" \
           converted-model/
           ls -l ./converted-model/*
+
+      - name: Upload to S3
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
