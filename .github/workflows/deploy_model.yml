@@ -1,4 +1,4 @@
-name: 'Test model and deploy'
+name: "Test model and deploy"
 
 on:
   workflow_dispatch:
@@ -7,20 +7,23 @@ on:
       - deploy_model
 env:
   GITHUB_WORKSPACE: ${{ vars.GITHUB_WORKSPACE }}
-      
+
 jobs:
   test-model:
     runs-on: "ubuntu-latest"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        
+
       - name: Download and setup miniconda
         run: |
           wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.3.1-0-Linux-x86_64.sh
           bash Miniconda3-py310_23.3.1-0-Linux-x86_64.sh -b
           conda init
-          source /home/runner/.bashrc
+
+      - name: Initialize conda
+        run: source /home/runner/.bashrc
+
       - name: Setup environment
         run: |
           conda create -p ./venv python==3.6.8 -y
@@ -29,5 +32,6 @@ jobs:
           pip install -r requirements
           cd model-tensorflow
           pip install ./bin/modelutils
+
       - name: Run model test
         run: mutils test
