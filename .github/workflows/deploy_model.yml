@@ -5,8 +5,8 @@ on:
   push:
     branches:
       - deploy_model
-    paths:
-      - "model-tensorflow/promoted-model/*"
+    # paths:
+    #   - "model-tensorflow/promoted-model/*"
 
 jobs:
   test-deploy-model:
@@ -37,4 +37,5 @@ jobs:
           mkdir converted-model
           conda run -p ../venv tensorflowjs_converter --input_format=keras --output_format=tfjs_graph_model \
           promoted-model/$(ls promoted-model/) \
-          converted-mode/"
+          converted-mode/
+          ls -l converted-model
