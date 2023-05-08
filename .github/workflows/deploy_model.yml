@@ -24,8 +24,7 @@ jobs:
       - name: Setup environment
         run: |
           conda create -p ./venv python==3.6.8 -y
-          pwd
-          conda run -p ./venv pip install -r requirements
+          conda run -p ./venv pip install -r requirements.txt
           conda run -p ./venv pip install ./model-tensorflow/bin/modelutils
 
       - name: Run model test
