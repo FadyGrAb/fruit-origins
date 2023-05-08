@@ -5,7 +5,7 @@ setup(
     version="0.0.1",
     packages=find_packages(),
     include_package_data=True,
-    install_requires=["Click", "pytest", "tensorflow"],
+    install_requires=["Click", "pytest", "tensorflow", "colorama"],
     entry_points={
         "console_scripts": ["mutils = modelutils:cli"],
     },
