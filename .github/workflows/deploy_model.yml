@@ -38,5 +38,5 @@ jobs:
           mkdir converted-model
           conda run -p ../venv tensorflowjs_converter --input_format=keras --output_format=tfjs_graph_model \
           "promoted-model/$(ls ./promoted-model)" \
-          converted-mode/
+          converted-model/
           ls -l ./converted-model/*
