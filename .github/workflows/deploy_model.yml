@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - deploy_model
-env:
-  GITHUB_WORKSPACE: ${{ vars.GITHUB_WORKSPACE }}
 
 jobs:
   test-model:
@@ -31,3 +29,6 @@ jobs:
         run: |
           cd model-tensorflow
           conda run -p ../venv mutils test
+
+      - name: Deploy model
+        run: echo "Model deplyoment script"
