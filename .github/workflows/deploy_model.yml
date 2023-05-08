@@ -34,8 +34,8 @@ jobs:
 
       - name: Deploy model
         run: |
+          cd model-tensorflow
           mkdir converted-model
-          ls -l
           conda run -p ../venv tensorflowjs_converter --input_format=keras --output_format=tfjs_graph_model \
           "promoted-model/$(ls ./promoted-model)" \
           converted-mode/
