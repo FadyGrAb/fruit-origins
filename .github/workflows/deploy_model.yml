@@ -39,4 +39,4 @@ jobs:
           conda run -p ../venv tensorflowjs_converter --input_format=keras --output_format=tfjs_graph_model \
           "promoted-model/$(ls ./promoted-model)" \
           converted-mode/
-          ls -l converted-model
+          ls -l ./converted-model/*
