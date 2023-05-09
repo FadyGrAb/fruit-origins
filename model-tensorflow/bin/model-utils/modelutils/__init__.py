@@ -96,9 +96,11 @@ def test(acc_value):
 
 
 @cli.command()
-def deploy():
+@click.option("-p", "--production", is_flag=True, default=False, help="Deploys the model to production environment.")
+def deploy(production: bool):
     """Deploy the promoted model."""
-    Deployer.deploy()
+    deployer = Deployer(production)
+    deployer.deploy()
 
 @cli.command()
 @click.argument("model_path", type=click.Path(exists=True))
