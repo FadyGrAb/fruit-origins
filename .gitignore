@@ -5,6 +5,7 @@ __pycache__
 *.egg-info
 model-tensorflow/data/ours
 model-tensorflow/models/*
+!model-tensorflow/models/models.json
 model-tensorflow/data/*
 !model-tensorflow/data/test
 node_modules
