@@ -15,16 +15,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Download and setup miniconda
+      - name: Setup environment
         run: |
+          echo "Download and setup miniconda"
           wget https://repo.anaconda.com/miniconda/Miniconda3-py310_23.3.1-0-Linux-x86_64.sh
           bash Miniconda3-py310_23.3.1-0-Linux-x86_64.sh -b
           conda init
-
-      - name: Setup environment
-        run: |
+          echo "Create virutal environment"
           conda create -p ./venv python==3.6.8 -y
+          echo "Installing dependencies"
           conda run -p ./venv pip install -r requirements.txt
+          echo "Installing Model-Utils tool"
           conda run -p ./venv pip install ./model-tensorflow/bin/model-utils
 
       - name: Run model test
@@ -32,22 +33,14 @@ jobs:
           cd model-tensorflow
           conda run -p ../venv mutils test
 
-      - name: Deploy model
-        run: |
-          cd model-tensorflow
-          mkdir converted-model
-          conda run -p ../venv tensorflowjs_converter --input_format=keras --output_format=tfjs_graph_model \
-          "promoted-model/$(ls ./promoted-model)" \
-          converted-model/
-          ls -l ./converted-model/*
-
-      - name: Upload to S3
+      - name: Deploy model and upload to S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
           MODEL_BUCKET: ${{ vars.MODEL_BUCKET }}
-
         run: |
-          aws --version
-          aws s3 cp ./model-tensorflow/converted-model/ s3://$MODEL_BUCKET/ --recursive
+          cd model-tensorflow
+          mkdir converted-model
+          conda run -p ../venv mutils deploy --production
+          ls -l ./converted-model/*
