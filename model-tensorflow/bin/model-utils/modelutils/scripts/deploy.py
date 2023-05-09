@@ -67,8 +67,9 @@ class Deployer:
 
     def __upload_to_s3(self, source_path: pathlib.Path):
         destination_bucket = os.getenv("MODEL_BUCKET")
+        cprint(f"[deployment] Initiating upload from {str(source_path)} to {destination_bucket}", color="blue", bright=True)
         if destination_bucket:
-            subprocess.run(f"aws s3 cp f{str(source_path)}/ s3://{destination_bucket}/ --recursive")
+            subprocess.run(f"aws s3 cp {str(source_path)}/ s3://{destination_bucket}/ --recursive")
             cprint(f"[deployment] Model is successfully uploaded", color="green", bright=True)
         else:
             cprint(f"[deployment] ERROR: MODEL_BUCKET is not set.", color="red", bright=True)
