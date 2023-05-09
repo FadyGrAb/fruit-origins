@@ -4,6 +4,8 @@ import os
 import sys
 import pathlib
 
+import boto3
+
 from .utils import get_project_dir, cprint
 
 
@@ -68,8 +70,12 @@ class Deployer:
     def __upload_to_s3(self, source_path: pathlib.Path):
         destination_bucket = os.getenv("MODEL_BUCKET")
         cprint(f"[deployment] Initiating upload from {str(source_path)} to {destination_bucket}", color="blue", bright=True)
+        s3 = boto3.resource("s3")
         if destination_bucket:
-            subprocess.run(f"aws s3 cp {str(source_path)}/ s3://{destination_bucket}/ --recursive")
+            for file in source_path.iterdir():
+                with file.open("rb") as f:
+                    s3.Bucket(destination_bucket).put_object(Key=file.name, Body=f)
+                    cprint(f"[deployment] {file.name} is uploaded.", color="blue", bright=True)
             cprint(f"[deployment] Model is successfully uploaded", color="green", bright=True)
         else:
             cprint(f"[deployment] ERROR: MODEL_BUCKET is not set.", color="red", bright=True)
