@@ -12,7 +12,7 @@ export async function handler(event, context) {
     const handler = tfnode.io.fileSystem("model.json");
     const model = await tf.loadGraphModel(handler);
     // Predict
-    const img = JSON.parse(event)["image"];
+    const img = tf.tensor(JSON.parse(JSON.parse(event)["body"]));
     const batch_img = tf.expandDims(img, 0);
     const predictions = tf.softmax(model.predict(batch_img)).dataSync();
     let predArray = [];

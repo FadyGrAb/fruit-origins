@@ -40,16 +40,24 @@ function App() {
     return pred.map((item) => [item[0], parseInt(item[1] * 100)]);
   };
 
-  const predict = () => {
+  const predict = async () => {
     // set "prediction" state
     const img = document.getElementById("uploaded-image");
     const img_tensor = tf.browser.fromPixels(img);
     const img_resized = tf.image.resizeBilinear(img_tensor, [100, 100]);
-    const response = fetch(`${API_GATEWAY}/predict`, {
-      image: JSON.stringify(img_resized),
+    const { shape, dtype } = img_resized;
+    const data = await img_resized.data();
+    const payload = {
+      shape,
+      dtype,
+      data,
+    };
+    const response = await fetch(`${API_GATEWAY}/predict`, {
+      method: "POST",
+      body: JSON.stringify(payload),
     });
-    console.log(response.predArray);
-    setPrediction(response.predArray);
+    console.log(await response.json());
+    // setPrediction(response.predArray);
     // const batch_img = tf.expandDims(img_resized, 0);
     // model.then((result) => {
     //   const predResult = tf.softmax(result.predict(batch_img)).dataSync();
