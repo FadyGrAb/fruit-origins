@@ -53,6 +53,7 @@ jobs:
           AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
         run: |
           export ECR_REPO="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
+          ls -l model-tensorflow/converted-model/
           cp model-tensorflow/converted-model/* aws/lambda/fruitifyMeServeModel/
           cd aws/lambda/fruitifyMeServeModel
           aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REPO
