@@ -1,7 +1,7 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 // import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import * as tf from "@tensorflow/tfjs";
-import classNames from "./classNames.js";
+import classNames from "./classNames.mjs";
 
 // const client = new S3Client();
 
