@@ -12,11 +12,11 @@ export async function handler(event, context) {
   try {
     const response = await client.send(command);
     const str = await response.Body.transformToString();
-    const CLASS_NAMES = JSON.parse().classNames;
+    const CLASS_NAMES = JSON.parse(str).classNames;
     // Load model
     MODEL_URL = `https://${process.env.MODEL_BUCKET}.s3.amazonaws.com/model.json`;
     const model = await tf.loadGraphModel(MODEL_URL);
-    return { body: str, version: JSON.stringify(model.modelVersion) };
+    return { body: CLASS_NAMES, version: JSON.stringify(model.modelVersion) };
   } catch (err) {
     console.error(err);
   }
