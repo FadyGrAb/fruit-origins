@@ -61,7 +61,7 @@ class Deployer:
                     file_content = textwrap.dedent(
                         f"""\
                         const classNames = {str(classes)}
-                        export classNames
+                        export default classNames
                         """
                         )
                     j.write(file_content)
