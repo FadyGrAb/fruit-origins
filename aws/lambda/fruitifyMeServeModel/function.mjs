@@ -1,23 +1,25 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 // import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import * as tf from "@tensorflow/tfjs";
+import classNames from "./classNames";
 
-const client = new S3Client();
+// const client = new S3Client();
 
 export async function handler(event, context) {
   // Get classNames.json
-  const classesCommand = new GetObjectCommand({
-    Bucket: process.env.MODEL_BUCKET,
-    Key: "classNames.json",
-  });
+  // const classesCommand = new GetObjectCommand({
+  //   Bucket: process.env.MODEL_BUCKET,
+  //   Key: "classNames.json",
+  // });
   // const modelCommand = new GetObjectCommand({
   //   Bucket: process.env.MODEL_BUCKET,
   //   Key: "model.json",
   // });
   try {
-    const response = await client.send(classesCommand);
-    const str = await response.Body.transformToString();
-    const CLASS_NAMES = JSON.parse(str).classNames;
+    // const response = await client.send(classesCommand);
+    // const str = await response.Body.transformToString();
+    // const CLASS_NAMES = JSON.parse(str).classNames;
+    const CLASS_NAMES = classNames;
     // Load model
     // const MODEL_URL = await getSignedUrl(client, modelCommand, {
     //   expiresIn: 3600,
