@@ -20,11 +20,12 @@ export async function handler(event, context) {
     // const str = await response.Body.transformToString();
     // const CLASS_NAMES = JSON.parse(str).classNames;
     const CLASS_NAMES = classNames;
+    console.log({ classNames: CLASS_NAMES });
     // Load model
     // const MODEL_URL = await getSignedUrl(client, modelCommand, {
     //   expiresIn: 3600,
     // });
-    const model = await tf.loadGraphModel("file://model.json");
+    const model = await tf.loadGraphModel("file:///model.json");
     return { body: CLASS_NAMES, version: JSON.stringify(model.modelVersion) };
   } catch (err) {
     console.error(err);
