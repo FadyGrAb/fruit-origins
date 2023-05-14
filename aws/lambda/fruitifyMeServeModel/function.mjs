@@ -4,7 +4,7 @@ import classNames from "./classNames.mjs";
 
 export async function handler(event, context) {
   try {
-    console.log(event);
+    console.log(JSON.parse(event));
     // Get classes
     const CLASS_NAMES = classNames;
     console.log({ classNames: CLASS_NAMES });
