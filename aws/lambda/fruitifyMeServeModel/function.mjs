@@ -22,7 +22,7 @@ export async function handler(event, context) {
     // const MODEL_URL = await getSignedUrl(client, modelCommand, {
     //   expiresIn: 3600,
     // });
-    const model = await tf.loadGraphModel("./model.json");
+    const model = await tf.loadGraphModel("/var/task/model.json");
     return { body: CLASS_NAMES, version: JSON.stringify(model.modelVersion) };
   } catch (err) {
     console.error(err);
