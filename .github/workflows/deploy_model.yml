@@ -40,14 +40,19 @@ jobs:
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
           MODEL_BUCKET: ${{ vars.MODEL_BUCKET }}
-
         run: |
           cd model-tensorflow
           mkdir converted-model
           conda run -p ../venv mutils deploy --production
-          ls -l ./converted-model/*
+
+      - name: Building and pushing Docker image
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
+        run: |
           export ECR_REPO = "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
-          echo "Building and pushing Docker image:"
           aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REPO
           docker build -t $ECR_REPO/fruitify-me-model:latest ../aws/lambda/fruitifyMeServeModel
           docker push $ECR_REPO/fruitify-me-model:latest
