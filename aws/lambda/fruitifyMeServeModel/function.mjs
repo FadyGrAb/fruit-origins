@@ -1,6 +1,7 @@
 import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 // import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import * as tf from "@tensorflow/tfjs";
+import * as tfnode from "@tensorflow/tfjs-node";
 import classNames from "./classNames.mjs";
 
 // const client = new S3Client();
@@ -25,7 +26,8 @@ export async function handler(event, context) {
     // const MODEL_URL = await getSignedUrl(client, modelCommand, {
     //   expiresIn: 3600,
     // });
-    const model = await tf.loadGraphModel("file:///model.json");
+    const handler = tfnode.io.fileSystem("model.json");
+    const model = await tf.loadGraphModel(handler);
     return { body: CLASS_NAMES, version: JSON.stringify(model.modelVersion) };
   } catch (err) {
     console.error(err);
