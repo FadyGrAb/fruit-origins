@@ -53,8 +53,9 @@ jobs:
           AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
         run: |
           export ECR_REPO="$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
+          cd aws/lambda/fruitifyMeServeModel
           aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REPO
-          docker build -t $ECR_REPO/fruitify-me-model:latest aws/lambda/fruitifyMeServeModel
+          docker build -t $ECR_REPO/fruitify-me-model:latest .
           docker push $ECR_REPO/fruitify-me-model:latest
           echo "Refreshing Lambda code:"
           aws lambda update-function-code --function-name fruitifyMeServeModel --image-uri $ECR_REPO/fruitify-me-model:latest

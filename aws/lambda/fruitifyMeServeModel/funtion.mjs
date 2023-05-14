@@ -1,4 +1,4 @@
 export async function handler(event, context) {
   console.log("Hello, It worked");
-  return {};
+  return { message: "Hello It works" };
 }
