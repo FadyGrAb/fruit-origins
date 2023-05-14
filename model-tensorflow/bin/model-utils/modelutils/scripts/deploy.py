@@ -60,8 +60,8 @@ class Deployer:
                 with (target_path / "classNames.js").open("w") as j:
                     file_content = textwrap.dedent(
                         f"""\
-                        const className = {str(classes)}
-                        export className
+                        const classNames = {str(classes)}
+                        export classNames
                         """
                         )
                     j.write(file_content)
