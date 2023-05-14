@@ -4,7 +4,7 @@ import classNames from "./classNames.mjs";
 
 export async function handler(event, context) {
   try {
-    console.log(JSON.parse(event));
+    console.log(event);
     // Get classes
     const CLASS_NAMES = classNames;
     console.log({ classNames: CLASS_NAMES });
@@ -12,7 +12,7 @@ export async function handler(event, context) {
     const handler = tfnode.io.fileSystem("model.json");
     const model = await tf.loadGraphModel(handler);
     // Predict
-    const img = tf.tensor(JSON.parse(JSON.parse(event)["body"]));
+    const img = tf.tensor(JSON.parse(event.body));
     const batch_img = tf.expandDims(img, 0);
     const predictions = tf.softmax(model.predict(batch_img)).dataSync();
     let predArray = [];
