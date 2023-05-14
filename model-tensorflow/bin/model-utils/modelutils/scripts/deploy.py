@@ -57,7 +57,7 @@ class Deployer:
                 classes = data.get("class_names", None)
             if classes:
                 target_path = self.deployment_path if self.production else self.assets_path
-                with (target_path / "classNames.js").open("w") as j:
+                with (target_path / "classNames.mjs").open("w") as j:
                     file_content = textwrap.dedent(
                         f"""\
                         const classNames = {str(classes)}
