@@ -1,11 +1,11 @@
 import json
 import subprocess
-import os
+# import os
 import sys
 import pathlib
 import textwrap
 
-import boto3
+# import boto3
 
 from .utils import get_project_dir, cprint
 
@@ -74,24 +74,24 @@ class Deployer:
             cprint(f"[deployment] ERROR: Can't locate models.json in {models_json.parent}.", color="red", bright=True)
             sys.exit(1)  
 
-    def __upload_to_s3(self, source_path: pathlib.Path):
-        destination_bucket = os.getenv("MODEL_BUCKET")
-        cprint(f"[deployment] Initiating upload from {str(source_path)} to {destination_bucket}", color="blue", bright=True)
-        s3 = boto3.resource("s3")
-        if destination_bucket:
-            for file in source_path.iterdir():
-                with file.open("rb") as f:
-                    s3.Bucket(destination_bucket).put_object(Key=file.name, Body=f)
-                    cprint(f"[deployment] {file.name} is uploaded.", color="blue", bright=True)
-            cprint(f"[deployment] Model is successfully uploaded", color="green", bright=True)
-        else:
-            cprint(f"[deployment] ERROR: MODEL_BUCKET is not set.", color="red", bright=True)
+    # def __upload_to_s3(self, source_path: pathlib.Path):
+    #     destination_bucket = os.getenv("MODEL_BUCKET")
+    #     cprint(f"[deployment] Initiating upload from {str(source_path)} to {destination_bucket}", color="blue", bright=True)
+    #     s3 = boto3.resource("s3")
+    #     if destination_bucket:
+    #         for file in source_path.iterdir():
+    #             with file.open("rb") as f:
+    #                 s3.Bucket(destination_bucket).put_object(Key=file.name, Body=f)
+    #                 cprint(f"[deployment] {file.name} is uploaded.", color="blue", bright=True)
+    #         cprint(f"[deployment] Model is successfully uploaded", color="green", bright=True)
+    #     else:
+    #         cprint(f"[deployment] ERROR: MODEL_BUCKET is not set.", color="red", bright=True)
 
     def deploy(self):
         model = self.__convert_model()
         source_path = self.__get_classes_names(model)
-        if self.production:
-            self.__upload_to_s3(source_path)
+        # if self.production:
+        #     self.__upload_to_s3(source_path)
 
         
             

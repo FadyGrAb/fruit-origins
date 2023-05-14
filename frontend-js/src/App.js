@@ -20,6 +20,8 @@ function App() {
   const [image, setImag] = useState(null);
   const [prediction, setPrediction] = useState(null);
 
+  const API_GATEWAY = "https://gqsh3e64y9.execute-api.us-east-1.amazonaws.com";
+
   const handleUpload = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -43,11 +45,16 @@ function App() {
     const img = document.getElementById("uploaded-image");
     const img_tensor = tf.browser.fromPixels(img);
     const img_resized = tf.image.resizeBilinear(img_tensor, [100, 100]);
-    const batch_img = tf.expandDims(img_resized, 0);
-    model.then((result) => {
-      const predResult = tf.softmax(result.predict(batch_img)).dataSync();
-      setPrediction(objectToArray(predResult));
+    const response = fetch(`${API_GATEWAY}/predict`, {
+      image: JSON.stringify(img_resized),
     });
+    console.log(response.predArray);
+    setPrediction(response.predArray);
+    // const batch_img = tf.expandDims(img_resized, 0);
+    // model.then((result) => {
+    //   const predResult = tf.softmax(result.predict(batch_img)).dataSync();
+    //   setPrediction(objectToArray(predResult));
+    // });
   };
 
   const hideImage = () => {
