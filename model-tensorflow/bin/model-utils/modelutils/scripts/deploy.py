@@ -3,6 +3,7 @@ import subprocess
 import os
 import sys
 import pathlib
+import textwrap
 
 import boto3
 
@@ -56,8 +57,14 @@ class Deployer:
                 classes = data.get("class_names", None)
             if classes:
                 target_path = self.deployment_path if self.production else self.assets_path
-                with (target_path / "classNames.json").open("w") as j:
-                    json.dump({"classNames": classes}, j)
+                with (target_path / "classNames.js").open("w") as j:
+                    file_content = textwrap.dedent(
+                        f"""\
+                        const className = {str(classes['classNames'])}
+                        export className
+                        """
+                        )
+                    j.write(file_content)
                 cprint(f"[deployment] Class names are exported in {str(target_path)}", color="green", bright=True)
                 return target_path
             else:
