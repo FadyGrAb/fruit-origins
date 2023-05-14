@@ -12,7 +12,7 @@ export async function handler(event, context) {
   });
   const modelCommand = new GetObjectCommand({
     Bucket: process.env.MODEL_BUCKET,
-    Key: "*",
+    Key: "model.json",
   });
   try {
     const response = await client.send(classesCommand);
