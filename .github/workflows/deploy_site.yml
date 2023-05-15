@@ -1,5 +1,5 @@
 name: "Deploy static website"
-run-name: "Deploy site Run: ${{ github.run_id }}"
+run-name: "Deploy Site Run: ${{ github.run_id }}"
 on:
   workflow_dispatch:
   push:
