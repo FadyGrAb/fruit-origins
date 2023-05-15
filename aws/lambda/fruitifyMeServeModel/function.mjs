@@ -14,11 +14,7 @@ export async function handler(event, context) {
     // Predict
     const payload = JSON.parse(event.body);
     console.log({ payload });
-    const img = tf.tensor(
-      Array(...payload.values),
-      payload.shape,
-      payload.dtype
-    );
+    const img = tf.tensor(payload.values, payload.shape, payload.dtype);
     const batch_img = tf.expandDims(img, 0);
     const predictions = tf.softmax(model.predict(batch_img)).dataSync();
     let predArray = [];
@@ -26,7 +22,7 @@ export async function handler(event, context) {
       predArray.push([[CLASS_NAMES[i]], predictions[i]]);
     }
     predArray = predArray.map((item) => [item[0], parseInt(item[1] * 100)]);
-    console.log(predArray);
+    console.log("======predictions", predArray);
     return { body: CLASS_NAMES, predictions: predArray };
   } catch (err) {
     console.error(err);
