@@ -46,11 +46,11 @@ function App() {
     const img_tensor = tf.browser.fromPixels(img);
     const img_resized = tf.image.resizeBilinear(img_tensor, [100, 100]);
     const { shape, dtype } = img_resized;
-    const values = img_resized.dataSync();
+    const data = img_resized.dataSync();
     const payload = {
       shape,
       dtype,
-      values,
+      data,
     };
     const response = await fetch(`${API_GATEWAY}/predict`, {
       method: "POST",
