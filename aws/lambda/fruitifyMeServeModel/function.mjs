@@ -14,9 +14,12 @@ export async function handler(event, context) {
     // Predict
     const payload = JSON.parse(event.body);
     console.log({ payload });
-    console.log("Type====", typeof payload.data);
-    console.log({ data: payload.data });
-    const img = tf.tensor(payload.data.values(), payload.shape, payload.dtype);
+    console.log({ data: Object.values(payload.data) });
+    const img = tf.tensor(
+      Object.values(payload.data),
+      payload.shape,
+      payload.dtype
+    );
     console.log({ img });
     const batch_img = tf.expandDims(img, 0);
     console.log({ batch_img });
