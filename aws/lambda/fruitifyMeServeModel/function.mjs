@@ -13,13 +13,10 @@ export async function handler(event, context) {
     const model = await tf.loadGraphModel(handler);
     // Predict
     const payload = JSON.parse(event.body);
+    const data = Object.values(payload.data).map((item) => parseFloat(item));
     console.log({ payload });
-    console.log({ data: Object.values(payload.data) });
-    const img = tf.tensor(
-      Object.values(payload.data),
-      payload.shape,
-      payload.dtype
-    );
+    console.log({ data: data });
+    const img = tf.tensor(data, payload.shape, payload.dtype);
     console.log({ img });
     const batch_img = tf.expandDims(img, 0);
     console.log({ batch_img });
