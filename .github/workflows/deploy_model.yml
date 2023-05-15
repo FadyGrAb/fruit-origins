@@ -1,5 +1,5 @@
 name: "Test model and deploy"
-run-name: "Run: ${{ github.run_id }}"
+run-name: "Deploy Model Run: ${{ github.run_id }}"
 on:
   workflow_dispatch:
   push:
@@ -33,13 +33,7 @@ jobs:
           cd model-tensorflow
           conda run -p ../venv mutils test
 
-      - name: Deploy model and upload to S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-          AWS_DEFAULT_REGION: ${{ vars.AWS_DEFAULT_REGION }}
-          MODEL_BUCKET: ${{ vars.MODEL_BUCKET }}
+      - name: Deploy model
         run: |
           cd model-tensorflow
           mkdir converted-model
