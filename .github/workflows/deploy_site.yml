@@ -21,6 +21,7 @@ jobs:
       - name: build site
         run: |
           cd frontend-js
+          npm install
           npm run build
 
       - name: Upload to S3
