@@ -46,7 +46,7 @@ function App() {
     const img_tensor = tf.browser.fromPixels(img);
     const img_resized = tf.image.resizeBilinear(img_tensor, [100, 100]);
     const { shape, dtype } = img_resized;
-    const values = await img_resized.data();
+    const values = img_resized.dataSync();
     const payload = {
       shape,
       dtype,

@@ -14,7 +14,11 @@ export async function handler(event, context) {
     // Predict
     const payload = JSON.parse(event.body);
     console.log({ payload });
-    const img = tf.tensor(payload.values, payload.shape, payload.dtype);
+    const img = tf.tensor(
+      payload.values.values().map((x) => parseFloat(x)),
+      payload.shape,
+      payload.dtype
+    );
     const batch_img = tf.expandDims(img, 0);
     const predictions = tf.softmax(model.predict(batch_img)).dataSync();
     let predArray = [];
