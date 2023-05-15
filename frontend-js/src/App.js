@@ -56,17 +56,15 @@ function App() {
       method: "POST",
       body: JSON.stringify(payload),
     });
-    console.log(await response.json());
-    // setPrediction(response.predArray);
-    // const batch_img = tf.expandDims(img_resized, 0);
-    // model.then((result) => {
-    //   const predResult = tf.softmax(result.predict(batch_img)).dataSync();
-    //   setPrediction(objectToArray(predResult));
-    // });
+    const result = await response.json();
+    const predArray = result["predictions"];
+    console.log(predArray);
+    setPrediction(predArray);
   };
 
   const hideImage = () => {
     setImag(null);
+    setPrediction([]);
   };
 
   return (
