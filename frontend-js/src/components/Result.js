@@ -15,7 +15,16 @@ const Result = (props) => {
 
   return (
     <Col hidden={props.hideChart}>
-      <HBarChart data={top10} />
+      <div
+        class="spinner-border text-primary m-5 p-5"
+        role="status"
+        hidden={props.prediction !== null}
+      >
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div hidden={props.prediction === null}>
+        <HBarChart data={top10} />
+      </div>
     </Col>
   );
 };

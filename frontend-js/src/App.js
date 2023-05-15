@@ -13,7 +13,7 @@ import Col from "react-bootstrap/Col";
 import * as tf from "@tensorflow/tfjs";
 import classNames from "./assets/classNames.json";
 
-const model = tf.loadGraphModel("/model/model.json");
+// const model = tf.loadGraphModel("/model/model.json");
 const CLASS_NAMES = classNames.classNames;
 
 function App() {
@@ -64,7 +64,7 @@ function App() {
 
   const hideImage = () => {
     setImag(null);
-    setPrediction([]);
+    setPrediction(null);
   };
 
   return (
