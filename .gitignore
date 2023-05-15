@@ -9,3 +9,4 @@ model-tensorflow/models/*
 model-tensorflow/data/*
 !model-tensorflow/data/test
 node_modules
+frontend-js/buid/*

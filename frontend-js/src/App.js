@@ -11,10 +11,6 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import * as tf from "@tensorflow/tfjs";
-import classNames from "./assets/classNames.json";
-
-// const model = tf.loadGraphModel("/model/model.json");
-const CLASS_NAMES = classNames.classNames;
 
 function App() {
   const [image, setImag] = useState(null);
@@ -29,15 +25,6 @@ function App() {
       const base64Data = reader.result;
       setImag(base64Data);
     };
-  };
-
-  const objectToArray = (result) => {
-    //Convert Object to list to invoke ordering
-    let pred = [];
-    for (let i = 0; i < result.length; ++i) {
-      pred.push([[CLASS_NAMES[i]], result[i]]);
-    }
-    return pred.map((item) => [item[0], parseInt(item[1] * 100)]);
   };
 
   const predict = async () => {
